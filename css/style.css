@@ -1,0 +1,821 @@
+/* ============================================================
+   1. БАЗА
+   ============================================================ */
+:root {
+    --neon: #48f7ff;
+    --accent: #3ab49f;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+    font-family: 'Noto Sans', system-ui, -apple-system, sans-serif;
+    background-color: #05060f;
+    color: #cfe3ff;
+    overflow-x: hidden;
+}
+
+/* Утилита для будущих блоков */
+.hover-lift { transition: transform .3s ease, box-shadow .3s ease; }
+.hover-lift:hover { transform: translateY(-10px); box-shadow: 0 15px 30px rgba(0,0,0,.1); }
+
+/* Скрываем элементы каскада только при работающем JS */
+.js .drop-el { opacity: 0; }
+
+/* ============================================================
+   2. КОСМИЧЕСКАЯ СЦЕНА И СЛОИ
+   ============================================================ */
+.space-hero {
+    position: relative;
+    min-height: 100vh;
+    overflow: hidden;
+    background: radial-gradient(120% 120% at 20% 10%, #0b0d21 0%, #05060f 55%, #020208 100%);
+    background-size: cover;
+    display: flex;
+    flex-direction: column;
+}
+
+.layer {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    will-change: transform;
+}
+
+/* ============================================================
+   3. ФОНОВЫЙ СЛОЙ (картинка)
+   ============================================================ */
+.space-bg {
+    position: absolute;
+    inset: -10%;                         /* чуть больший запас для зума до 1.35 */
+    background: url('../img/bg1.png') center / cover no-repeat;
+    will-change: transform;
+    transform-origin: 50% 40%; 
+}
+
+/* ============================================================
+   4. ПЯТЬ МИГАЮЩИХ ЗВЁЗД
+   ============================================================ */
+.big-star {
+    position: absolute;
+    width: 4px; height: 4px;
+    border-radius: 50%;
+    background: #fff;
+    box-shadow: 0 0 10px 3px rgba(255,255,255,.8),
+                0 0 36px 10px rgba(150,190,255,.35);
+}
+.big-star::before,
+.big-star::after { content: ""; position: absolute; }
+.big-star::before {
+    left: -16px; top: 50%; width: 36px; height: 2px; transform: translateY(-50%);
+    background: linear-gradient(90deg, transparent, #fff, transparent);
+}
+.big-star::after {
+    top: -16px; left: 50%; width: 2px; height: 36px; transform: translateX(-50%);
+    background: linear-gradient(180deg, transparent, #fff, transparent);
+}
+
+/* ============================================================
+   5. СИНИЕ ЛУЧИ
+   ============================================================ */
+.beam {
+    position: absolute;
+    top: -25%; left: 52%;
+    width: 130px; height: 160%;
+    transform: rotate(20deg);
+    background: linear-gradient(180deg, transparent, rgba(90,160,255,.35) 35%,
+                rgba(140,220,255,.55) 50%, rgba(90,160,255,.35) 65%, transparent);
+    filter: blur(5px);
+    opacity: .55;
+}
+.beam-2 { left: 58%; width: 60px; }
+
+/* ============================================================
+   6. КОРАБЛЬ
+   ============================================================ */
+.ship-wrap {
+    position: absolute;
+    left: -150px; 
+    bottom: -90px;
+    width: min(60vw, 760px);
+    will-change: transform;
+}
+.ship-img {
+    width: 100%; height: auto;
+    display: block;
+    filter: drop-shadow(0 0 25px rgba(80,150,255,.3));
+    transition: filter .4s ease;
+}
+.ship-img:hover { filter: drop-shadow(0 0 40px rgba(80,150,255,.5)); }
+
+/* ============================================================
+   7. ВЕРХНЯЯ ПАНЕЛЬ (контакты + логотип)
+   ============================================================ */
+.top-bar {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    z-index: 20;
+    padding: 0;                                   /* без отступа сверху */
+    background: linear-gradient(180deg, rgba(2,2,10,.65) 0%, rgba(2,2,10,0) 100%);
+    pointer-events: none;
+}
+.top-bar a { pointer-events: auto; }
+
+.top-logo {
+    height: 150px;                                /* высота логотипа */
+    width: auto;
+    filter: drop-shadow(0 0 12px rgba(72,247,255,.35));
+    transition: filter .3s ease, transform .3s ease;
+}
+.top-logo:hover {
+    filter: drop-shadow(0 0 20px rgba(72,247,255,.6));
+    transform: scale(1.03);
+}
+
+.top-contact {
+    display: inline-block;
+    color: #cfe3ff;
+    text-decoration: none;
+    font-size: 1.4rem;                            /* крупный текст, без иконок */
+    font-weight: 600;
+    letter-spacing: .02em;
+    transition: color .3s ease, text-shadow .3s ease;
+    text-shadow: 0 0 20px rgba(255, 255, 255, 0.85);
+}
+.top-contact:hover {
+    color: #fff;
+    text-shadow: 0 0 14px rgba(72,247,255,.75);
+}
+
+/* ============================================================
+   8. ЗАГОЛОВОК И ПОСИМВОЛЬНОЕ ПОЯВЛЕНИЕ
+   ============================================================ */
+.hero-content {
+    position: relative;
+    z-index: 5;
+    padding-top: calc(150px + 3rem);              /* ниже логотипа */
+    text-align: center;
+}
+.hero-title {
+    color: #ffffff;
+    font-weight: 800;
+    font-size: clamp(2.2rem, 5vw, 4rem);
+    text-shadow: 0 0 30px rgba(2, 6, 14, 0.85);
+}
+.hero-subtitle {
+    color: var(--accent);                         /* #3ab49f */
+    font-weight: 700;
+    font-size: clamp(1.2rem, 3vw, 1.9rem);
+    margin-top: .75rem;
+    text-shadow: 0 0 20px rgba(255, 255, 255, 0.85);
+}
+.char {
+    display: inline-block;
+    white-space: pre;                             /* сохраняет пробелы */
+    opacity: 0;                                   /* span создаёт только JS */
+    will-change: transform, opacity;
+}
+
+/* ============================================================
+   9. АДАПТИВ И ДОСТУПНОСТЬ
+   ============================================================ */
+@media (max-width: 575.98px) {
+    .top-logo { height: 90px; }
+    .top-contact { font-size: .95rem; }
+    .hero-content { padding-top: calc(90px + 2rem); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .char, .js .drop-el { opacity: 1 !important; }
+    .hover-lift, .top-logo, .top-contact, .ship-img { transition: none; }
+}
+
+/* ============================================================
+   10. ПРОМО-БЛОК: SVG-бордер с переливом + стекло
+   ============================================================ */
+.promo-wrap {
+    position: relative;
+    z-index: 5;
+    display: flex;
+    justify-content: center;
+    padding-bottom: 3rem;
+    margin-top: 2rem;
+}
+.promo-card {
+    position: relative;
+    width: 50%;
+    min-width: 320px;
+    isolation: isolate;
+     background: rgba(8, 14, 36, .25);
+    backdrop-filter: blur(4px);         /* синий блюр стекла */
+    -webkit-backdrop-filter: blur(4px);
+    border-radius: 10px;
+}
+/* SVG растянут на всю карточку */
+.card-border {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    filter: drop-shadow(0 0 14px rgba(72,247,255,.35));
+}
+.card-border-rect {
+    fill: rgba(8, 14, 36, .55);          /* стеклянный фон внутри рамки */
+    stroke: url(#borderGrad);            /* переливающаяся рамка */
+    stroke-width: 2.5;                   /* толщина = 2px как просили */
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+}
+.card-inner {
+    position: relative;
+    padding: 2.2rem 2rem;
+    text-align: center;
+    border-radius: 28px;
+}
+
+/* --- Объёмная красная кнопка --- */
+.btn-promo {
+    position: relative;
+    border: none;
+    cursor: pointer;
+    color: #fff;
+    font-family: inherit;
+    font-weight: 800;
+    font-size: clamp(.95rem, 1.6vw, 1.2rem);
+    letter-spacing: .02em;
+    padding: 1rem 2.6rem;
+    border-radius: 50px;
+    background: linear-gradient(135deg, #ff6b6b 0%, #e63946 45%, #c1121f 100%);
+    box-shadow:
+        inset 0 2px 3px rgba(255,255,255,.45),   /* блик сверху */
+        inset 0 -4px 8px rgba(0,0,0,.35),         /* объём снизу */
+        0 10px 22px rgba(255, 40, 40, .45);       /* внешняя тень */
+    transition: transform .3s cubic-bezier(.22,1,.36,1), box-shadow .3s ease;
+    overflow: hidden;
+}
+/* Блик, пробегающий по кнопке при наведении */
+.btn-promo::after {
+    content: "";
+    position: absolute;
+    top: 0; left: -120%;
+    width: 60%; height: 100%;
+    background: linear-gradient(120deg, transparent, rgba(255,255,255,.55), transparent);
+    transform: skewX(-20deg);
+    transition: left .6s ease;
+}
+.btn-promo:hover {
+    transform: translateY(-4px) scale(1.04);
+    box-shadow:
+        inset 0 2px 3px rgba(255,255,255,.55),
+        inset 0 -4px 8px rgba(0,0,0,.35),
+        0 16px 34px rgba(255, 40, 40, .65);
+}
+.btn-promo:hover::after { left: 130%; }
+.btn-promo:active { transform: translateY(-1px) scale(1.0); }
+
+.promo-text {
+    margin-top: 1.4rem;
+    color: #dbe6ff;
+    font-size: clamp(.95rem, 1.5vw, 1.1rem);
+    line-height: 1.6;
+}
+
+/* ============================================================
+   11. КРУГОВОЙ ТАЙМЕР (тонкие кольца)
+   ============================================================ */
+.timer {
+    display: flex;
+    justify-content: center;
+    gap: clamp(.8rem, 3vw, 1.8rem);
+    margin-top: 1.8rem;
+}
+.t-circle {
+    --val: 0;
+    --ring: #48f7ff;
+    position: relative;
+    width: clamp(64px, 9vw, 92px);
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background:
+        radial-gradient(closest-side, rgba(8,14,36,.9) 88%, transparent 89%),
+        conic-gradient(var(--ring) calc(var(--val) * 1%), rgba(255,255,255,.08) 0);
+    box-shadow: 0 0 14px rgba(72,247,255,.2);
+}
+.t-num {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: clamp(1.3rem, 3vw, 1.8rem);
+    font-weight: 800;
+    color: #fff;
+    text-shadow: 0 0 12px rgba(72,247,255,.6);
+}
+.t-label {
+    position: absolute;
+    left: 0; right: 0; bottom: -1.4rem;
+    text-align: center;
+    font-size: .72rem;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: #8fa6cf;
+}
+
+@media (max-width: 575.98px) {
+    .promo-card { width: 100%; }
+}
+@media (prefers-reduced-motion: reduce) {
+    .btn-promo, .btn-promo::after { transition: none; }
+}
+.js .rise-up,
+.js .rise-el { opacity: 0; }
+
+.rock-wrap {
+    position: absolute;
+    right: -40px;
+    bottom: -80px;                 /* слегка выглядывает из-за кромки, как в арте */
+    width: 500px;
+    will-change: transform;
+}
+.rock-img {
+    width: 100%; height: auto;
+    display: block;
+    filter: drop-shadow(0 0 22px rgba(80,150,255,.25));
+    transition: filter .4s ease;
+}
+.rock-img:hover { filter: drop-shadow(0 0 36px rgba(80,150,255,.45)); }
+
+@media (max-width: 575.98px) {
+    .rock-wrap { width: 46vw; right: -6%; bottom: -3%; }
+}
+
+@media (max-width: 1199px) {
+.space-bg {
+    background-position: 70% 0;
+}
+}
+/* ============================================================
+   12. СЕТКА ПРЕИМУЩЕСТВ (карточки 3×2, картинка 160px)
+   ============================================================ */
+.features {
+    background: #ffffff;
+    color: #1a2233;
+    padding: clamp(4rem, 9vw, 7rem) 0;
+}
+.features-head { margin-bottom: 3rem; }
+.features-title {
+    font-weight: 800;
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
+    color: #0d1b3e;
+    margin-bottom: .4rem;
+}
+.features-subtitle {
+    font-weight: 700;
+    letter-spacing: .25em;
+    text-transform: uppercase;
+    color: #3ab49f;
+    font-size: clamp(.9rem, 1.6vw, 1.1rem);
+}
+
+/* --- Карточка преимущества --- */
+.feat-card {
+    height: 100%;                         /* выравнивает карточки одной строки по высоте */
+    display: flex;
+    flex-direction: column;
+    align-items: center;                  /* всё по центру */
+    text-align: center;
+    padding: 2rem 1.5rem;
+    border-radius: 20px;
+    background: #fafbfd;
+    box-shadow: 0 6px 18px rgba(13, 27, 62, .06);
+    transition: transform .4s cubic-bezier(.22,1,.36,1), box-shadow .4s ease, background .4s ease;
+}
+.feat-card:hover {
+    transform: translateY(-8px);
+    background: #ffffff;
+    box-shadow: 0 20px 40px rgba(13, 27, 62, .14);
+}
+.feat-card h3 {
+    font-weight: 800;
+    font-size: clamp(1.05rem, 1.6vw, 1.25rem);
+    color: #0d1b3e;
+    margin: 1.4rem 0 .8rem;
+    line-height: 1.3;
+}
+.feat-card p {
+    font-size: .95rem;
+    line-height: 1.65;
+    color: #3a4663;
+    margin: 0;
+}
+
+/* --- Круглая картинка 160px + бегущее кольцо --- */
+.feat-circle {
+    position: relative;
+    width: 160px;                          /* фиксированный размер как просили */
+    height: 160px;
+    border-radius: 50%;
+    overflow: hidden;
+    box-shadow: 0 12px 28px rgba(13, 27, 62, .15);
+    transition: transform .5s cubic-bezier(.22,1,.36,1);
+}
+.feat-card:hover .feat-circle { transform: scale(1.05); }
+.feat-circle img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    display: block;
+}
+/* SVG-кольцо поверх картинки */
+.feat-ring {
+    position: absolute;
+    inset: -3px;
+    width: calc(100% + 6px);
+    height: calc(100% + 6px);
+    pointer-events: none;
+    filter: drop-shadow(0 0 3px #19eaff) drop-shadow(0 0 6px #7c2cff);
+}
+.feat-ring circle {
+    fill: none;
+    stroke: #48f7ff;
+    stroke-width: 1.6;
+    stroke-linecap: round;
+    stroke-dasharray: 25 351;
+    animation: ringDraw 3.2s linear infinite;
+}
+/* Разные цвета колец для чередующихся карточек */
+.feat-card:nth-of-type(even) .feat-ring circle { stroke: #ff4ac8; animation-duration: 3.8s; }
+.feat-card:nth-of-type(3n)   .feat-ring circle { stroke: #8dffb8; animation-duration: 2.8s; }
+
+@keyframes ringDraw {
+    from { stroke-dashoffset: 376; }
+    to   { stroke-dashoffset: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .feat-ring circle { animation: none; stroke-dasharray: 376 0; opacity: .35; }
+    .fade-item { opacity: 1 !important; transform: none !important; }
+}
+
+/* ============================================================
+   13. КНОПКИ ДЕЙСТВИЙ ПОД СПИСКОМ ПРЕИМУЩЕСТВ
+   ============================================================ */
+.cta-group {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1.2rem;
+    margin-top: 3rem;                     /* отступ от сетки */
+}
+.cta-btn {
+    font-size: clamp(.95rem, 1.5vw, 1.1rem);
+    padding: .95rem 2.2rem;
+    text-decoration: none;                /* сброс стиля ссылки */
+    color: #fff;
+}
+/* Зелёная модификация — фон #3AB49F */
+.btn-green {
+    background: linear-gradient(135deg, #4dd0b8 0%, #3ab49f 50%, #2a9d8f 100%);
+    box-shadow:
+        inset 0 2px 3px rgba(255,255,255,.4),
+        inset 0 -4px 8px rgba(0,0,0,.28),
+        0 10px 22px rgba(58, 180, 159, .45);
+}
+.btn-green:hover {
+    box-shadow:
+        inset 0 2px 3px rgba(255,255,255,.5),
+        inset 0 -4px 8px rgba(0,0,0,.28),
+        0 16px 34px rgba(58, 180, 159, .65);
+}
+/* Блик на обеих кнопках наследуется от .btn-promo::after */
+
+@media (max-width: 575.98px) {
+    .cta-group { flex-direction: column; }
+    .cta-btn { width: 100%; max-width: 320px; }
+}
+
+/* ============================================================
+   14. СЕКЦИЯ «О НАШЕЙ КОМПАНИИ»
+   ============================================================ */
+.about-company {
+    background: #ffffff;
+    color: #1a2233;
+    padding: 0 0 clamp(4rem, 9vw, 7rem) 0;
+}
+.about-subtitle {
+    font-weight: 600;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    color: #3ab49f;
+    font-size: clamp(.9rem, 1.5vw, 1.1rem);
+    margin-bottom: .5rem;
+}
+.about-title {
+    font-weight: 800;
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
+    color: #0d1b3e;
+}
+
+/* --- Текст левой колонки --- */
+.desc-company p,
+.desc-company li {
+    font-size: clamp(.98rem, 1.3vw, 1.08rem);
+    line-height: 1.75;
+    color: #3a4663;
+}
+.desc-company h3 {
+    font-weight: 800;
+    font-size: clamp(1.15rem, 2vw, 1.4rem);
+    color: #0d1b3e;
+    margin-top: 1.6rem;
+    margin-bottom: .6rem;
+}
+.desc-company ul {
+    padding-left: 1.3rem;
+    list-style: disc;
+}
+.desc-company li { margin-bottom: .4rem; }
+
+/* --- Картинка с анимированным SVG-бордером --- */
+.about-figure {
+    position: relative;
+    margin: 0 0 1.5rem;
+    isolation: isolate;
+    border-radius: 20px;
+    overflow: hidden;
+}
+.about-figure img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 20px;
+}
+/* SVG-рамка поверх картинки */
+.fig-border {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 2;
+    filter: drop-shadow(0 0 10px rgba(72,247,255,.3));
+}
+.fig-border rect {
+    fill: none;
+    stroke: url(#figGrad);
+    stroke-width: 3;
+    rx: 20; ry: 20;
+}
+
+/* --- Плашка под картинкой --- */
+.about-note {
+    position: relative;
+    padding: 1.6rem 1.8rem;
+    border-radius: 16px;
+    background: linear-gradient(135deg, #f0fdfa 0%, #e6fffb 100%);
+    color: #1a4d45;
+    font-size: clamp(.95rem, 1.3vw, 1.05rem);
+    line-height: 1.7;
+    box-shadow: 0 8px 24px rgba(58, 180, 159, .12);
+    border-left: 4px solid #3ab49f;
+}
+.about-note::before {
+    content: "\201C";                     /* открывающая кавычка */
+    position: absolute;
+    top: -10px; left: 14px;
+    font-size: 4rem;
+    font-family: Georgia, serif;
+    color: rgba(58, 180, 159, .25);
+    line-height: 1;
+}
+
+@media (max-width: 991.98px) {
+    .about-figure { margin-top: 2rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+    .fade-item, .fade-item-left, .fade-item-right { opacity: 1 !important; transform: none !important; }
+}
+
+/* Стартовое смещение вниз только при работающем JS */
+.js .cta-btn { opacity: 0; transform: translateY(40px); }
+
+
+/* ============================================================
+   15. СЕКЦИЯ С ВИДЕО-ФОНОМ И ПЛАШКОЙ ОШИБОК
+   ============================================================ */
+.video-section {
+    position: relative;
+    width: 100vw;
+    height: auto;
+    aspect-ratio: 1920 / 1050;
+    overflow: hidden;
+    color: #fff;
+}
+
+/* --- Видео на заднем плане --- */
+.video-bg-wrap {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+}
+.video-bg {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;                        /* заполняет без искажений */
+    display: block;
+}
+.video-overlay {
+    position: absolute;
+    inset: 0;
+   
+}
+
+/* --- Контент поверх --- */
+.video-content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    padding: 4rem 1rem;
+}
+.video-subtitle {
+    font-weight: 600;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    color: #3ab49f;
+    font-size: clamp(.95rem, 1.6vw, 1.2rem);
+    margin-bottom: .6rem;
+    text-shadow: 0 0 18px rgba(58,180,159,.5);
+}
+.video-title {
+    font-weight: 800;
+    font-size: clamp(2rem, 5vw, 3rem);
+    color: #fff;
+    text-shadow: 0 4px 30px rgba(0,0,0,.6);
+    margin-bottom: 2.5rem;
+}
+
+/* ============================================================
+   15b. КОМПАКТНАЯ ПЛАШКА С ОШИБКАМИ (стеклянная)
+   ============================================================ */
+.error-board {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: .6rem;
+    padding: 1.1rem 1.4rem;
+    border-radius: 14px;
+    background: rgba(8, 10, 20, .1);
+    backdrop-filter: blur(14px) saturate(140%);
+    -webkit-backdrop-filter: blur(14px) saturate(140%);
+    box-shadow:
+        0 10px 28px rgba(0,0,0,.45),
+        inset 0 1px 0 rgba(255,255,255,.08);
+    border: 1px solid rgba(255,255,255,.1);
+    max-width: 380px;
+    margin-top: 2rem;
+    text-align: left;
+    position: absolute;
+    left: 60%;
+    top: 200px;
+}
+.error-prefix {
+    font-weight: 700;
+    color: #8fa6cf;
+    font-size: .85rem;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+}
+.typed-lines {
+    min-height: 5.2rem;                   /* резервируем место под 4 строки */
+    width: 100%;
+}
+.typed-line {
+    display: block;
+    color: #fff;
+    font-weight: 600;
+    font-size: clamp(.95rem, 1.4vw, 1.08rem);
+    line-height: 1.5;
+    white-space: nowrap;
+    overflow: hidden;
+}
+.typed-line::after {                      /* мигающий курсор на активной строке */
+    content: "▍";
+    color: #48f7ff;
+    margin-left: 2px;
+    animation: cursorBlink .9s step-end infinite;
+}
+.typed-line.done::after { content: ""; }  /* убрать курсор у завершённых строк */
+
+.more-link {
+    display: inline-flex;
+    align-items: center;
+    gap: .25rem;
+    color: #ff4d4d;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: .95rem;
+    opacity: 0;
+    transform: translateY(6px);
+    transition: opacity .4s ease, transform .4s ease, color .3s ease;
+    pointer-events: none;                 /* кликабельна только после появления */
+}
+.more-link.show {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+}
+.more-link:hover {
+    color: #ff8a8a;
+    text-shadow: 0 0 14px rgba(255,77,77,.55);
+}
+.more-link i { font-size: 1.15rem; transition: transform .3s ease; }
+.more-link:hover i { transform: translateX(4px); }
+
+@keyframes cursorBlink {
+    0%, 100% { opacity: 1; }
+    50%      { opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .typed-line::after { animation: none; }
+}
+
+.typed-lines {
+    min-height: 2rem;                    /* была 5.2rem под 4 строки, теперь одна */
+    width: 100%;
+}
+
+/* ============================================================
+   15c. КОНТУРНАЯ ЦИТАТА С ЗАПОЛНЕНИЕМ БЕЛЫМ
+   ============================================================ */
+.outline-quote {
+    position: absolute;
+    top: 300px;
+    left: 0;
+    width: 580px;
+    text-align: center;
+}
+.split-outline {
+    display: inline-block;
+    font-weight: 700;
+    font-size: clamp(1.6rem, 3.5vw, 1rem);
+    line-height: 1.25;
+    letter-spacing: .1em;
+}
+
+/* Обёртка одной буквы: два наложенных слоя */
+.ochar-wrap {
+    position: relative;
+    display: inline-block;
+    white-space: pre;                      /* сохраняет пробелы между словами */
+}
+
+/* Нижний слой — белый контур (всегда виден) */
+.ochar-stroke {
+    color: transparent;
+    -webkit-text-stroke: 1.5px #ffffff;
+    paint-order: stroke fill;
+    text-shadow: 0 0 18px rgba(255,255,255,.25);
+    user-select: none;
+    transition: text-shadow 1.6s ease;     /* ← добавить эту строку */
+}
+
+/* Верхний слой — белая заливка (изначально скрыта маской) */
+.ochar-fill {
+    position: absolute;
+    inset: 0;
+    color: #ffffff;
+    -webkit-text-stroke: 0;
+    clip-path: inset(100% 0 0 0);          /* спрятана снизу вверх */
+    transition: clip-path 1.6s cubic-bezier(.4, 0, .2, 1);   /* было .9s → теперь 1.6s */
+    pointer-events: none;
+}
+
+/* Активированная буква: маска поднимается → появляется белый цвет */
+.ochar-wrap.lit .ochar-fill {
+    clip-path: inset(0 0 0 0);
+}
+
+/* Мягкое свечение вокруг уже «зажённой» буквы */
+.ochar-wrap.lit .ochar-stroke {
+    text-shadow:
+        0 0 14px rgba(255,255,255,.7),
+        0 0 30px rgba(72,247,255,.35);
+}
+
+@media (max-width: 767.98px) {
+    .split-outline { font-size: clamp(1.3rem, 6vw, 2rem); }
+    .ochar-stroke  { -webkit-text-stroke-width: 1px; }
+}
+@media (prefers-reduced-motion: reduce) {
+    .ochar-fill { transition: none; clip-path: inset(0 0 0 0); }
+}
+.o-line {
+    display: block;
+    white-space: nowrap;                   /* не переносим внутри строки */
+}
+@media (max-width: 767.98px) {
+    .o-line { white-space: normal; }       /* на мобильных разрешаем перенос слов */
+}

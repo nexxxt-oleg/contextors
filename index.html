@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contextors — Создание продающих сайтов</title>
+
+    <!-- Флаг для CSS: JS работает (каскад не мигает) -->
+    <script>document.documentElement.classList.add('js');</script>
+
+    <!-- Bootstrap 5.3 + иконки -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!--link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"-->
+
+    <!-- Шрифт Noto Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Все стили в одном файле -->
+    <link rel="stylesheet" href="./css/style.css">
+</head>
+<body>
+
+    <!-- ============ КОСМИЧЕСКАЯ СЦЕНА (ПЕРВЫЙ БЛОК) ============ -->
+    <section class="space-hero" id="space-hero">
+        
+
+        <!-- Верхняя панель: email / логотип / телефон -->
+        <header class="top-bar">
+            <div class="container">
+                <div class="row align-items-center gy-3">
+                    <div class="col-6 col-md-4 order-2 order-md-1 text-start">
+                        <a href="mailto:info@contextors.ru" class="top-contact drop-el" id="contact-email">
+                            info@contextors.ru
+                        </a>
+                    </div>
+                    <div class="col-12 col-md-4 order-1 order-md-2 text-center">
+                        <a href="/" class="d-inline-block drop-el" id="logo-link">
+                            <img src="img/logo_contour_animation.svg" alt="Contextors" class="top-logo">
+                        </a>
+                    </div>
+                    <div class="col-6 col-md-4 order-3 text-end">
+                        <a href="tel:+79787000947" class="top-contact drop-el" id="contact-phone">
+                            +7 978 700 09 47
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Заголовок с посимвольным появлением -->
+        <div class="hero-content container">
+            <h1 class="hero-title split-text" data-start="900">Создание продающих сайтов</h1>
+            <p class="hero-subtitle split-text" data-start="2200">Адаптивная технология БЕСПЛАТНО!</p>
+        </div>
+
+       <!-- ===== БЛОК АКЦИИ С SVG-БОРДЕРОМ И ТАЙМЕРОМ ===== -->
+        <div class="promo-wrap container">
+            <div class="promo-card rise-up" id="promoCard">
+
+        
+
+                <!-- Контент поверх бордера -->
+                <div class="card-inner">
+                    <button class="btn-promo rise-el">Получить 10% СКИДКУ!</button>
+                    <p class="promo-text rise-el">
+                        АКЦИЯ! Успейте оставить заявку и получить 10% СКИДКУ на разработку и продвижение!<br>
+                        Закажите обратный звонок и наш менеджер бесплатно проконсультирует Вас!
+                    </p>
+                    <div class="timer rise-el" id="timer"></div>
+                </div>
+
+            </div>
+        </div>
+
+             <!-- Слой: фоновая картинка -->
+        <div class="layer" data-depth="0.05">
+            <div class="space-bg" id="space-bg"></div>
+        </div>
+
+        <!-- Слой: 5 медленно мигающих звёзд -->
+        <div class="layer" data-depth="0.1">
+            <span class="big-star" style="left:14%; top:34%;"></span>
+            <span class="big-star" style="left:36%; top:16%;"></span>
+            <span class="big-star" style="left:57%; top:8%;"></span>
+            <span class="big-star" style="left:76%; top:24%;"></span>
+            <span class="big-star" style="left:26%; top:74%;"></span>
+        </div>
+
+
+        <!-- Слой: корабль -->
+        <div class="layer" data-depth="0.5">
+            <div class="ship-wrap" id="ship">
+                <img src="img/ship.png" alt="Космический корабль AIF-07" class="ship-img">
+            </div>
+        </div>
+
+        <div class="layer" data-depth="0.35">
+            <div class="rock-wrap" id="rock">
+                <img src="img/asteroid.png" alt="Астероид с маяковой вышкой" class="rock-img">
+            </div>
+        </div>
+
+    </section>
+
+
+    <!-- ============ СЕКЦИЯ: НАШИ ПРЕИМУЩЕСТВА ============ -->
+<section class="features" id="features">
+    <div class="container">
+
+        <!-- Заголовок секции -->
+        <header class="features-head text-center mb-5">
+            <p class="features-subtitle fade-item">Почему мы лучше других?</p>
+            <h2 class="features-title fade-item">НАШИ ПРЕИМУЩЕСТВА</h2>
+        </header>
+
+        <div class="row g-4">
+
+    <!-- === Карточка 1 === -->
+    <div class="col-12 col-md-6 col-lg-4 fade-item">
+        <article class="feat-card">
+            <div class="feat-circle">
+                <img src="https://contextors.ru/upload/iblock/8f7/contextor_pr_1_1.png" alt="Индивидуальный подход">
+                <svg class="feat-ring" viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="48"/></svg>
+            </div>
+            <h3>Индивидуальный подход к клиентам</h3>
+            <p>Наш индивидуальный подход к клиентам заключается не только в учете всех пожеланий при создании сайта, но и в использовании адаптивного веб-дизайна, который позволяет одинаково гармонично отображать содержимое сайта на любом устройстве.</p>
+        </article>
+    </div>
+
+    <!-- === Карточка 2 === -->
+    <div class="col-12 col-md-6 col-lg-4 fade-item">
+        <article class="feat-card">
+            <div class="feat-circle">
+                <img src="https://contextors.ru/upload/iblock/8f7/contextor_pr_1_1.png" alt="Индивидуальный подход">
+                <svg class="feat-ring" viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="48"/></svg>
+            </div>
+            <h3>Индивидуальный подход к клиентам</h3>
+            <p>Наш индивидуальный подход к клиентам заключается не только в учете всех пожеланий при создании сайта, но и в использовании адаптивного веб-дизайна, который позволяет одинаково гармонично отображать содержимое сайта на любом устройстве.</p>
+        </article>
+    </div>
+
+    <!-- === Карточка 3 === -->
+    <div class="col-12 col-md-6 col-lg-4 fade-item">
+        <article class="feat-card">
+            <div class="feat-circle">
+                <img src="https://contextors.ru/upload/iblock/8f7/contextor_pr_1_1.png" alt="Индивидуальный подход">
+                <svg class="feat-ring" viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="48"/></svg>
+            </div>
+            <h3>Индивидуальный подход к клиентам</h3>
+            <p>Наш индивидуальный подход к клиентам заключается не только в учете всех пожеланий при создании сайта, но и в использовании адаптивного веб-дизайна, который позволяет одинаково гармонично отображать содержимое сайта на любом устройстве.</p>
+        </article>
+    </div>
+
+    <!-- === Карточка 4 === -->
+    <div class="col-12 col-md-6 col-lg-4 fade-item">
+        <article class="feat-card">
+            <div class="feat-circle">
+                <img src="https://contextors.ru/upload/iblock/8f7/contextor_pr_1_1.png" alt="Индивидуальный подход">
+                <svg class="feat-ring" viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="48"/></svg>
+            </div>
+            <h3>Индивидуальный подход к клиентам</h3>
+            <p>Наш индивидуальный подход к клиентам заключается не только в учете всех пожеланий при создании сайта, но и в использовании адаптивного веб-дизайна, который позволяет одинаково гармонично отображать содержимое сайта на любом устройстве.</p>
+        </article>
+    </div>
+
+    <!-- === Карточка 5 === -->
+    <div class="col-12 col-md-6 col-lg-4 fade-item">
+        <article class="feat-card">
+            <div class="feat-circle">
+                <img src="https://contextors.ru/upload/iblock/8f7/contextor_pr_1_1.png" alt="Индивидуальный подход">
+                <svg class="feat-ring" viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="48"/></svg>
+            </div>
+            <h3>Индивидуальный подход к клиентам</h3>
+            <p>Наш индивидуальный подход к клиентам заключается не только в учете всех пожеланий при создании сайта, но и в использовании адаптивного веб-дизайна, который позволяет одинаково гармонично отображать содержимое сайта на любом устройстве.</p>
+        </article>
+    </div>
+
+    <!-- === Карточка 6 === -->
+    <div class="col-12 col-md-6 col-lg-4 fade-item">
+        <article class="feat-card">
+            <div class="feat-circle">
+                <img src="https://contextors.ru/upload/iblock/8f7/contextor_pr_1_1.png" alt="Индивидуальный подход">
+                <svg class="feat-ring" viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="48"/></svg>
+            </div>
+            <h3>Индивидуальный подход к клиентам</h3>
+            <p>Наш индивидуальный подход к клиентам заключается не только в учете всех пожеланий при создании сайта, но и в использовании адаптивного веб-дизайна, который позволяет одинаково гармонично отображать содержимое сайта на любом устройстве.</p>
+        </article>
+    </div>
+
+</div>
+
+  <!-- Кнопки действий -->
+        <div class="cta-group text-center">
+            <a href="/files/brief.pdf" download class="btn-promo cta-btn rise-el">Скачать бриф</a>
+            <a href="#callback-form" class="btn-promo btn-green cta-btn rise-el">Заказать бесплатную консультацию</a>
+        </div>
+
+    </div>
+</section>
+
+<!-- ============ СЕКЦИЯ: О НАШЕЙ КОМПАНИИ ============ -->
+<section class="about-company" id="about">
+    <div class="container">
+
+        <!-- Шапка секции -->
+        <header class="text-center mb-5">
+            <p class="about-subtitle fade-item">Интернет-агентство Contextor</p>
+            <h2 class="about-title fade-item">О НАШЕЙ КОМПАНИИ</h2>
+        </header>
+
+        <!-- Двухколоночный контент -->
+        <div class="row g-5 align-items-start">
+
+            <!-- Левая колонка: текст -->
+            <div class="col-lg-6 fade-item-left">
+                <div class="desc-company">
+                    <p>&nbsp;Дамы и господа!<br><br>
+                        Вас приветствует команда профессионалов интернет — агентства Contextor. Мы занимаемся разработкой интернет — проектов любой направленности и степени сложности.</p>
+                    <h3><span style="color: #37b59d;">В нашем активе</span></h3>
+                    <ul>
+                        <li>высокая квалификация всех сотрудников, что подтверждается соответствующими документами;</li>
+                        <li>яркая креативность и профессиональный подход к решению творческих задач;</li>
+                        <li>уважение к вкусам клиентов, учет их требований и пожеланий;</li>
+                        <li>работа в режиме онлайн, обеспечивающем постоянный контакт с клиентами.</li>
+                    </ul>
+                    <h3><span style="color: #37b59d;">Что предлагаем</span></h3>
+                    <p>Мы создадим для вас сайт и сделаем его:</p>
+                    <ul>
+                        <li>современным,</li>
+                        <li>выразительным,</li>
+                        <li>удобным для пользователей,</li>
+                        <li>приносящим высокую и стабильную прибыль.</li>
+                    </ul>
+                    <p>Предлагаем вам рассмотреть возможность сотрудничества с нашей командой. Мы гарантируем отличный результат не потому, что мы – лучшие. А потому, что считаем лучшими своих клиентов!</p>
+                </div>
+            </div>
+
+            <!-- Правая колонка: картинка + плашка -->
+            <div class="col-lg-6 fade-item-right">
+                <figure class="about-figure">
+                    <img src="https://contextors.ru/local/templates/contextr/img/main_contextor.jpg" alt="Команда Contextor">
+                    <svg class="fig-border" aria-hidden="true">
+                        <defs>
+                            <linearGradient id="figGrad" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="100%" y2="100%">
+                                <stop offset="0%"   stop-color="#48f7ff"/>
+                                <stop offset="25%"  stop-color="#8dffb8"/>
+                                <stop offset="50%"  stop-color="#ffd166"/>
+                                <stop offset="75%"  stop-color="#ff4ac8"/>
+                                <stop offset="100%" stop-color="#48f7ff"/>
+                                <animateTransform attributeName="gradientTransform" type="rotate"
+                                                from="0 0.5 0.5" to="360 0.5 0.5" dur="6s" repeatCount="indefinite"/>
+                            </linearGradient>
+                        </defs>
+                        <rect width="100%" height="100%"/>
+                    </svg>
+                </figure>
+                <aside class="about-note">
+                    Сегодняшние реалии таковы, что без наличия собственного сайта современный бизнес не может полноценно развиваться. Интернет-пространство представляет собой неисчерпаемый ресурс, который неразумно игнорировать. И промедление с созданием сайта уже в ближайшем будущем обязательно обернется финансовыми потерями.
+                </aside>
+            </div>
+
+        </div>
+
+        <!-- Кнопки действий -->
+        <div class="cta-group text-center">
+            <a href="/portfolio/"  class="btn-promo cta-btn rise-el">Смотреть все работы</a>
+            <a href="#callback-form" class="btn-promo btn-green cta-btn rise-el">Заказать обратный звонок</a>
+        </div>
+    </div>
+</section>
+
+<!-- ============ СЕКЦИЯ: ВИДЕО-ФОН + ОШИБКИ САЙТА ============ -->
+<section class="video-section" id="problems">
+
+    <!-- Видео на весь экран (задний план) -->
+    <div class="video-bg-wrap ">
+        <video class="video-bg" autoplay muted loop playsinline poster="./img/home3.jpg" >
+             <source src="img/video1.webm" type="video/webm; codecs=vp9">
+            <source src="img/video1.webm" type="video/webm; codecs=vp8,vorbis">
+
+            <source src="./img/video1.mov" type="video/quicktime">
+            <!--source src="./img/video1.ogv" type="video/ogg; codecs=theora,vorbis">
+            <source src="./img/video2.mp4" type="video/mp4"-->
+        </video>
+        <!-- Затемнение для читаемости текста -->
+        <div class="video-overlay"></div>
+    </div>
+
+    <!-- Текст поверх видео -->
+    <div class="video-content container position-relative">
+        <p class="video-subtitle fade-item">Решим любые проблемы!</p>
+        <h2 class="video-title fade-item">ОШИБКИ ВАШЕГО САЙТА</h2>
+
+       
+
+        <a ref="https://contextors.ru/articles/s-nami-vy-budete-chuvstvovat-sebya-v-bezopasnosti-/" class="outline-quote fade-item">
+    <span  class="split-outline" data-text="С нами Вы будете чувствовать|себя в безопасности"></span>
+        </a>
+
+       <div class="error-board fade-item">
+            <div class="error-prefix">Типичные ошибки:</div>
+            <div class="typed-lines" id="typedLines"></div>
+            <a href="#" class="more-link" id="moreLink">
+                Подробнее <i class="bi bi-arrow-right-short"></i>
+            </a>
+        </div>
+    </div>
+
+</section>
+
+    <!-- ============ СКРИПТЫ ============ -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Библиотека anime.js -->
+    <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+
+    <script src="./js/script.js">
+    </script>
+</body>
+</html>
